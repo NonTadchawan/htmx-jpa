@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Student</title>
+</head>
+<body>
+<div class="card">
+    <div class="card-body">
+        <form hx-get="/student/search" hx-target="#student-table" hx-params="*">
+            <div class="row d-flex justify-content-center" th:fragment="student-search" id="student-search">
+                <div class="row mb-3 col-8">
+                    <label for="name" class="col-form-label col-2 text-end">Student name</label>
+                    <div class="col-md-7 col-xl-3">
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <button class="btn btn-primary"
+                            type="submit">Search
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row mt-3 d-flex justify-content-center" id="student-table"
+             th:fragment="student-table">
+            <a class="btn btn-outline-info float-end" href="/add-student">Add student</a>
+
+            <table class="table table-hover table-borderless table-responsive text-center">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>E-mail</th>
+                    <th>Phone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${students}" id="student">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.fName}"></td>
+                    <td th:text="${item.lName}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${item.phone}"></td>
+                    <td>
+                        <button class="btn btn-outline-primary"
+                                hx-confirm="confirm delete?"
+                                th:attr="hx-delete=@{/student/{id}(id=${item.id})}"
+                                hx-swap="outerHTML"
+                                hx-target="closest #student"
+                        >delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

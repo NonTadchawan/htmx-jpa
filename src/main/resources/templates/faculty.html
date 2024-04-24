@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Faculty</title>
+</head>
+<body>
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3 dflex justify-content-center" th:fragment="faculty-form" id="faculty-form">
+            <label for="new-faculty" class="col-form-label">Add new faculty</label>
+            <div class="col-md-7 col-xl-3">
+                <input type="text" name="new-faculty" id="new-faculty" class="form-control">
+            </div>
+            <div class="col-xl-2">
+                <button class="btn btn-primary"
+                        hx-post="/faculty" hx-include="#new-faculty"
+                        hx-target="#faculty-table">Submit
+                </button>
+            </div>
+        </div>
+        <div class="justify-content-center">
+            <div class="row mt-3 table card-body d-flex justify-content-center col-xl-8" id="faculty-table">
+                <table th:fragment="faculty-table" class="table table-hover table-borderless table-responsive text-center">
+                    <thead>
+                    <tr>
+                        <th >Id</th>
+                        <th >Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${faculty}" id="faculty">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td>
+                            <button class="btn btn-outline-primary"
+                                    hx-confirm="confirm delete?"
+                                    th:attr="hx-delete=@{/faculty/{id}(id=${item.id})}"
+                                    hx-swap="outerHTML"
+                                    hx-target="closest #faculty"
+                            >delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
